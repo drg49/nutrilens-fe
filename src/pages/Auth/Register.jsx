@@ -6,7 +6,7 @@ import Button from '../../components/Button';
 
 import * as api from '../../api/authentication';
 import { formContainsEmptyValues } from '../../utils/validation';
-import { capitalizeWords, parseError } from '../../utils/helperMethods';
+import { parseError } from '../../utils/helperMethods';
 import { notifyError } from '../../utils/toastMethods';
 import { TOAST_POSITIONS } from '../../utils/constants';
 
@@ -18,18 +18,13 @@ const Register = ({ isLoading, setIsLoading }) => {
 
   const [registerForm, setRegisterForm] = useState({
     // Step 1 Fields (Required by DB constraints)
-    first_name: '',
-    last_name: '',
+    username: '',
     email: '',
     password: '',
-    birthdate: '',
 
     // Step 2 Fields (Remaining schema fields)
     phone_number: '',
     bio: '',
-    gender: '',
-    interested_in: '',
-    height_cm: '',
     location: '',
   });
 
@@ -44,22 +39,15 @@ const Register = ({ isLoading, setIsLoading }) => {
 
   // Step 1 Data Normalization
   const normalizeAuthData = (form) => ({
-    first_name: capitalizeWords(form.first_name.trim()),
-    last_name: form.last_name.trim()
-      ? capitalizeWords(form.last_name.trim())
-      : null,
+    username: form.username.trim(),
     email: form.email.trim().toLowerCase(),
     password: form.password,
-    birthdate: form.birthdate,
   });
 
   // Step 2 Data Normalization (Remaining fields only)
   const normalizeProfileData = (form) => ({
     phone_number: form.phone_number.trim() || null,
     bio: form.bio?.trim() || null,
-    gender: form.gender || null,
-    interested_in: form.interested_in || null,
-    height_cm: form.height_cm ? Number(form.height_cm) : null,
     location: form.location.trim() || null,
   });
 
@@ -71,10 +59,9 @@ const Register = ({ isLoading, setIsLoading }) => {
     // Checks fields with "NOT NULL" constraints in your database
     if (
       formContainsEmptyValues({
-        first_name: registerForm.first_name,
+        username: registerForm.username,
         email: registerForm.email,
         password: registerForm.password,
-        birthdate: registerForm.birthdate,
       })
     ) {
       notifyError('Please fill required fields', BOTTOM_CENTER);
@@ -120,20 +107,11 @@ const Register = ({ isLoading, setIsLoading }) => {
           <br />
           <Input
             type="text"
-            name="first_name"
-            label="First Name"
-            placeholder="First Name *"
+            name="username"
+            label="Username"
+            placeholder="Username *"
             change={handleChange}
-            value={registerForm.first_name}
-            animate
-          />
-          <Input
-            type="text"
-            name="last_name"
-            label="Last Name"
-            placeholder="Last Name"
-            change={handleChange}
-            value={registerForm.last_name}
+            value={registerForm.username}
             animate
           />
           <Input
@@ -156,15 +134,6 @@ const Register = ({ isLoading, setIsLoading }) => {
             animate
             preventSpaces
           />
-          <Input
-            type="date"
-            name="birthdate"
-            label="Birthdate"
-            placeholder="Birthdate *"
-            change={handleChange}
-            value={registerForm.birthdate}
-            animate
-          />
 
           <Button
             text="Continue"
@@ -179,7 +148,7 @@ const Register = ({ isLoading, setIsLoading }) => {
         <>
           {/* STEP 2: REMAINING SCHEMA FIELDS */}
           <h2>
-            Nice to meet you {registerForm.first_name}! Tell us a bit more about
+            Nice to meet you {registerForm.username}! Tell us a bit more about
             yourself.
           </h2>
           <br />
@@ -201,36 +170,6 @@ const Register = ({ isLoading, setIsLoading }) => {
             placeholder="Location"
             change={handleChange}
             value={registerForm.location}
-            animate
-          />
-
-          <Input
-            type="number"
-            name="height_cm"
-            label="Height (cm)"
-            placeholder="Height (cm)"
-            change={handleChange}
-            value={registerForm.height_cm}
-            animate
-          />
-
-          <Input
-            type="text"
-            name="gender"
-            label="Gender"
-            placeholder="Gender"
-            change={handleChange}
-            value={registerForm.gender}
-            animate
-          />
-
-          <Input
-            type="text"
-            name="interested_in"
-            label="Interested In"
-            placeholder="Interested In"
-            change={handleChange}
-            value={registerForm.interested_in}
             animate
           />
 
