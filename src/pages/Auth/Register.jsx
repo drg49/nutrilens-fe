@@ -167,12 +167,10 @@ const Register = ({ isLoading, setIsLoading }) => {
         </>
       ) : (
         <>
-          <h2>
+          <Typography variant="h6">
             Nice to meet you {registerForm.username}! Tell us a bit more about
             yourself.
-          </h2>
-
-          <br />
+          </Typography>
 
           <TextField
             type="tel"

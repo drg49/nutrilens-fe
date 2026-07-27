@@ -59,10 +59,6 @@ const BottomNav = () => {
           )}
         </div>
       </div>
-
-      <button className="logout-btn" onClick={handleLogout} aria-label="Logout">
-        <FontAwesomeIcon icon={faSignOutAlt} />
-      </button>
     </nav>
   );
 };

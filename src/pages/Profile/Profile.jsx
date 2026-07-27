@@ -58,10 +58,29 @@ const Profile = ({ user }) => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await api.logout();
+    } catch (err) {
+      notifyError(parseError(err), TOP_CENTER);
+    }
+  };
+
   return (
     <div className="profile-container">
       <Logo />
-      <h2>Your Profile</h2>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <h2>Your Profile</h2>
+        <Button variant="text" color="primary" onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>
       <Form id="profile-form" onSubmit={handleSubmit}>
         <TextField
           type="text"
