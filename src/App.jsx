@@ -5,7 +5,7 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer } from 'react-toastify';
 import { validateUser } from './api/authentication';
 import 'react-toastify/dist/ReactToastify.css';
-import SideNav from './components/SideNav/SideNav';
+import BottomNav from './components/BottomNav/BottomNav';
 import Details from './components/Details/Details';
 
 const spinner = (
@@ -34,7 +34,7 @@ const App = () => {
     <>
       {isLoggedIn && (
         <div className="container">
-          <SideNav />
+          <BottomNav />
           <Details />
           <div className="main">
             <Suspense fallback={spinner}>
