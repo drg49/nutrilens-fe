@@ -2,8 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import data from './links';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt, faCamera } from '@fortawesome/free-solid-svg-icons';
-import { logout } from '../../api/authentication';
+import { faCamera } from '@fortawesome/free-solid-svg-icons';
 import './BottomNav.scss';
 
 const LinkWithIcon = ({ name, icon, link, currentPath }) => {
@@ -18,10 +17,6 @@ const LinkWithIcon = ({ name, icon, link, currentPath }) => {
 
 const BottomNav = () => {
   const location = useLocation();
-
-  const handleLogout = () => {
-    logout();
-  };
 
   const left = data[0];
   const right = data[1];
