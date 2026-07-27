@@ -8,7 +8,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import BottomNav from './components/BottomNav/BottomNav';
 
 const spinner = (
-  <FontAwesomeIcon icon={faSpinner} size="10x" color="gray" spin />
+  <div className="spinner-wrapper">
+    <FontAwesomeIcon icon={faSpinner} size="10x" color="gray" spin />
+  </div>
 );
 
 const Home = lazy(() => import('./pages/Home/Home'));

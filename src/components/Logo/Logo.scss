@@ -11,5 +11,13 @@
     font-size: 55px;
     margin: 0px;
     color: rgb(99, 99, 255);
+
+    // Smaller font sizes for smaller screens
+    @media (max-width: 389px) {
+      font-size: 47px;
+    }
+    @media (max-width: 350px) {
+      font-size: 40px;
+    }
   }
 }

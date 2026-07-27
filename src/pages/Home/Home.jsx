@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { getProfiles } from '../../api/profiles';
+import { getPersonalRecipes } from '../../api/personal-recipes';
 
 const Home = () => {
   useEffect(() => {
-    getProfiles().then((data) => console.log(data));
+    getPersonalRecipes().then((data) => console.log(data));
   }, []);
 
   return (

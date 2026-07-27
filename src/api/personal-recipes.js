@@ -1,7 +1,7 @@
 import { handleResponse } from '../utils/helperMethods';
-const root = process.env.REACT_APP_API_ROOT_URL + '/profiles';
+const root = process.env.REACT_APP_API_ROOT_URL + '/personal-recipes';
 
-export const getProfiles = async () =>
+export const getPersonalRecipes = async () =>
   handleResponse(
     await fetch(`${root}/`, {
       method: 'GET',
