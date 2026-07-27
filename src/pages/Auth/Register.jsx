@@ -157,6 +157,8 @@ const Register = ({ isLoading, setIsLoading }) => {
             onClick={handleAuthSubmit}
             disabled={isLoading}
             type="button"
+            fullWidth
+            sx={{ marginTop: 2 }}
           >
             {isLoading ? (
               <CircularProgress size={18} color="inherit" />
@@ -221,6 +223,8 @@ const Register = ({ isLoading, setIsLoading }) => {
             onClick={handleProfileSubmit}
             disabled={isLoading}
             type="button"
+            fullWidth
+            sx={{ marginTop: 2 }}
           >
             {isLoading ? (
               <CircularProgress size={18} color="inherit" />

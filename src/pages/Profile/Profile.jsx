@@ -81,7 +81,7 @@ const Profile = ({ user }) => {
         }}
       >
         <h2>Your Profile</h2>
-        <Button variant="text" color="primary" onClick={handleLogout}>
+        <Button variant="contained" color="secondary" onClick={handleLogout}>
           Logout
         </Button>
       </div>
@@ -158,6 +158,8 @@ const Profile = ({ user }) => {
           onClick={handleSubmit}
           disabled={isSaving}
           type="button"
+          fullWidth
+          sx={{ marginTop: 2 }}
         >
           {isSaving ? (
             <CircularProgress size={18} color="inherit" />

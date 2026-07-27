@@ -64,6 +64,8 @@ const Login = ({ isLoading, setIsLoading }) => {
         onClick={handleSubmit}
         disabled={isLoading}
         type="button"
+        fullWidth
+        sx={{ marginTop: 2 }}
       >
         {isLoading ? <CircularProgress size={18} color="inherit" /> : 'Login'}
       </Button>
