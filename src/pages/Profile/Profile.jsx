@@ -6,8 +6,9 @@ import Button from '../../components/Button/Button';
 import { notifyError, notifySuccess } from '../../utils/toastMethods';
 import { parseError } from '../../utils/helperMethods';
 import { TOAST_POSITIONS } from '../../utils/constants';
+import Logo from '../../components/Logo/Logo';
 
-const { BOTTOM_CENTER } = TOAST_POSITIONS;
+const { TOP_CENTER } = TOAST_POSITIONS;
 
 const Profile = ({ user }) => {
   console.log('Profile component received user:', user); // Debugging log
@@ -35,7 +36,7 @@ const Profile = ({ user }) => {
     if (isSaving) return;
 
     if (!profileForm.username.trim() || !profileForm.email.trim()) {
-      notifyError('Username and Email are required.', BOTTOM_CENTER);
+      notifyError('Username and Email are required.', TOP_CENTER);
       return;
     }
 
@@ -48,9 +49,9 @@ const Profile = ({ user }) => {
       };
 
       await api.updateUser(payload);
-      notifySuccess('Profile updated successfully!', BOTTOM_CENTER);
+      notifySuccess('Profile updated successfully!', TOP_CENTER);
     } catch (err) {
-      notifyError(parseError(err), BOTTOM_CENTER);
+      notifyError(parseError(err), TOP_CENTER);
     } finally {
       setIsSaving(false);
     }
@@ -58,12 +59,13 @@ const Profile = ({ user }) => {
 
   return (
     <div className="profile-container">
+      <Logo />
       <h2>Your Profile</h2>
       <Form id="profile-form" onSubmit={handleSubmit}>
         <Input
           type="text"
           name="username"
-          label="Username"
+          label="Username *"
           placeholder="Username"
           change={handleChange}
           value={profileForm.username}
@@ -73,7 +75,7 @@ const Profile = ({ user }) => {
         <Input
           type="email"
           name="email"
-          label="Email Address"
+          label="Email Address *"
           placeholder="Email Address"
           change={handleChange}
           value={profileForm.email}

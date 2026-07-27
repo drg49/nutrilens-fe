@@ -10,7 +10,7 @@ import { parseError } from '../../utils/helperMethods';
 import { notifyError } from '../../utils/toastMethods';
 import { TOAST_POSITIONS } from '../../utils/constants';
 
-const { BOTTOM_CENTER } = TOAST_POSITIONS;
+const { TOP_CENTER } = TOAST_POSITIONS;
 
 const Register = ({ isLoading, setIsLoading }) => {
   // Track the registration step (1: Required Credentials, 2: Remaining Optional Details)
@@ -64,7 +64,7 @@ const Register = ({ isLoading, setIsLoading }) => {
         password: registerForm.password,
       })
     ) {
-      notifyError('Please fill required fields', BOTTOM_CENTER);
+      notifyError('Please fill required fields', TOP_CENTER);
       return;
     }
 
@@ -73,7 +73,7 @@ const Register = ({ isLoading, setIsLoading }) => {
       await api.register(normalizeAuthData(registerForm));
       setStep(2);
     } catch (err) {
-      notifyError(parseError(err), BOTTOM_CENTER);
+      notifyError(parseError(err), TOP_CENTER);
     } finally {
       setIsLoading(false);
     }
@@ -89,7 +89,7 @@ const Register = ({ isLoading, setIsLoading }) => {
       await api.updateUser(normalizeProfileData(registerForm));
       window.location.reload();
     } catch (err) {
-      notifyError(parseError(err), BOTTOM_CENTER);
+      notifyError(parseError(err), TOP_CENTER);
     } finally {
       setIsLoading(false);
     }
@@ -159,7 +159,7 @@ const Register = ({ isLoading, setIsLoading }) => {
           <Input
             type="tel"
             name="phone_number"
-            label="Phone Number"
+            label="Phone Number (Optional)"
             placeholder="Phone Number"
             change={handleChange}
             value={registerForm.phone_number}
@@ -170,7 +170,7 @@ const Register = ({ isLoading, setIsLoading }) => {
           <Input
             type="text"
             name="location"
-            label="Location"
+            label="Location (Optional)"
             placeholder="Location"
             change={handleChange}
             value={registerForm.location}
@@ -181,7 +181,7 @@ const Register = ({ isLoading, setIsLoading }) => {
           <Input
             type="text"
             name="bio"
-            label="Bio"
+            label="Bio (Optional)"
             placeholder="Bio"
             change={handleChange}
             value={registerForm.bio}

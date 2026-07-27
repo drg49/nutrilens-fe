@@ -8,7 +8,7 @@ import { notifyError } from '../../utils/toastMethods';
 import { TOAST_POSITIONS } from '../../utils/constants';
 import * as api from '../../api/authentication';
 
-const { BOTTOM_CENTER } = TOAST_POSITIONS;
+const { TOP_CENTER } = TOAST_POSITIONS;
 
 const Login = ({ isLoading, setIsLoading }) => {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
@@ -19,7 +19,7 @@ const Login = ({ isLoading, setIsLoading }) => {
       api
         .login(loginForm)
         .then(() => window.location.reload())
-        .catch((err) => notifyError(parseError(err), BOTTOM_CENTER))
+        .catch((err) => notifyError(parseError(err), TOP_CENTER))
         .finally(() => setIsLoading(false));
     }
   };

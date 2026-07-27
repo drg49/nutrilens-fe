@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import data from './links';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt, faCamera } from '@fortawesome/free-solid-svg-icons';
-import Logo from '../Logo/Logo';
 import { logout } from '../../api/authentication';
 import './BottomNav.scss';
 
