@@ -159,8 +159,8 @@ const Register = ({ isLoading, setIsLoading }) => {
           <Input
             type="tel"
             name="phone_number"
-            label="Phone Number (Optional)"
-            placeholder="Phone Number"
+            label="Phone Number"
+            placeholder="Optional"
             change={handleChange}
             value={registerForm.phone_number}
             animate
@@ -170,8 +170,8 @@ const Register = ({ isLoading, setIsLoading }) => {
           <Input
             type="text"
             name="location"
-            label="Location (Optional)"
-            placeholder="Location"
+            label="Country"
+            placeholder="Optional"
             change={handleChange}
             value={registerForm.location}
             animate
@@ -181,8 +181,8 @@ const Register = ({ isLoading, setIsLoading }) => {
           <Input
             type="text"
             name="bio"
-            label="Bio (Optional)"
-            placeholder="Bio"
+            label="Bio"
+            placeholder="Optional"
             change={handleChange}
             value={registerForm.bio}
             animate

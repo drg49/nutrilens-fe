@@ -87,7 +87,6 @@ const Profile = ({ user }) => {
           type="tel"
           name="phone_number"
           label="Phone Number"
-          placeholder="Phone Number"
           change={handleChange}
           value={profileForm.phone_number}
           animate
@@ -96,8 +95,7 @@ const Profile = ({ user }) => {
         <Input
           type="text"
           name="location"
-          label="Location"
-          placeholder="Location"
+          label="Country"
           change={handleChange}
           value={profileForm.location}
           animate
