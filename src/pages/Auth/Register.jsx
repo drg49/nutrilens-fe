@@ -205,7 +205,6 @@ const Register = ({ isLoading, setIsLoading }) => {
           </FormControl>
 
           <TextField
-            id="bio-field"
             type="text"
             name="bio"
             label="Bio"
