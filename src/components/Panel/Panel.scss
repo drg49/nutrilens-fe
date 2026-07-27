@@ -1,59 +1,48 @@
-$purple-shadow: #091f36;
-$grey-blue: #4f5f76;
-$small: 200px;
-$medium: 300px;
-$large: 400px;
-$panel-padding: 10px;
-$header-height: 32px;
-
-@function calculate-height($size-dimension) {
-  @return $size-dimension - $panel-padding - $header-height;
-}
-
 .app-panel {
-  border: 1px solid $purple-shadow;
-  background-color: $grey-blue;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 420px);
+  max-width: 100%;
+  max-height: 90vh;
+  background-color: #4f5f76;
+  border: 1px solid #091f36;
   border-radius: 8px;
+  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
 
-  &.sm {
-    width: $small;
-    padding: $panel-padding;
-
-    &.fixed-height .app-panel-content {
-      height: calculate-height($small);
-    }
-  }
-
-  &.md {
-    width: $medium;
-    padding: $panel-padding;
-
-    &.fixed-height .app-panel-content {
-      height: calculate-height($medium);
-    }
-  }
-
-  &.lg {
-    width: $large;
-    padding: $panel-padding;
-
-    &.fixed-height .app-panel-content {
-      height: calculate-height($large);
-    }
+  header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
   }
 
   .app-panel-content {
     overflow: auto;
+    flex: 1 1 auto;
+    margin-top: 8px;
   }
+}
 
-  h2 {
-    margin: 0px;
-    color: whitesmoke;
-  }
+/* Minimal close button reset */
+.app-panel .close-btn {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
 
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+@media (max-width: 360px) {
+  .app-panel {
+    width: 94vw;
+    padding: 8px;
+    border-radius: 6px;
   }
 }

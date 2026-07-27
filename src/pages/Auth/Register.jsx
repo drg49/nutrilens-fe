@@ -8,6 +8,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
 
 import * as api from '../../api/authentication';
 import { formContainsEmptyValues } from '../../utils/validation';
@@ -112,9 +113,7 @@ const Register = ({ isLoading, setIsLoading }) => {
     >
       {step === 1 ? (
         <>
-          <h2>Create Your Account</h2>
-          <br />
-
+          <Typography variant="h6">Create Your Account</Typography>
           <TextField
             type="text"
             name="username"

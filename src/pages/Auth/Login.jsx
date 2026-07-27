@@ -41,6 +41,7 @@ const Login = ({ isLoading, setIsLoading }) => {
         inputProps={{ maxLength: 150 }}
         fullWidth
         margin="normal"
+        sx={{ backgroundColor: 'white' }}
       />
 
       <TextField
@@ -54,10 +55,10 @@ const Login = ({ isLoading, setIsLoading }) => {
         inputProps={{ maxLength: 255 }}
         fullWidth
         margin="normal"
+        sx={{ backgroundColor: 'white' }}
       />
 
       <Button
-        id="login-button"
         variant="contained"
         color="primary"
         onClick={handleSubmit}
