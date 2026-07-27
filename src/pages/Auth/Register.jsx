@@ -135,7 +135,7 @@ const Register = ({ isLoading, setIsLoading }) => {
             value={registerForm.password}
             animate
             preventSpaces
-            maxLength={105}
+            maxLength={255}
           />
 
           <Button

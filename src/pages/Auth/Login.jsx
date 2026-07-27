@@ -39,6 +39,7 @@ const Login = ({ isLoading, setIsLoading }) => {
         change={handleChange}
         animate
         preventSpaces
+        maxLength={150}
       />
       <Input
         id="login-password"
@@ -50,6 +51,7 @@ const Login = ({ isLoading, setIsLoading }) => {
         change={handleChange}
         animate
         preventSpaces
+        maxLength={255}
       />
       <Button
         text="Login"
