@@ -4,9 +4,13 @@ import Form from '../../components/Form/Form';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import { notifyError, notifySuccess } from '../../utils/toastMethods';
 import { parseError } from '../../utils/helperMethods';
-import { TOAST_POSITIONS } from '../../utils/constants';
+import { TOAST_POSITIONS, countries } from '../../utils/constants';
 import Logo from '../../components/Logo/Logo';
 
 const { TOP_CENTER } = TOAST_POSITIONS;
@@ -117,16 +121,23 @@ const Profile = ({ user }) => {
           margin="normal"
         />
 
-        <TextField
-          type="text"
-          name="location"
-          label="Country"
-          onChange={handleChange}
-          value={profileForm.location}
-          inputProps={{ maxLength: 100 }}
-          fullWidth
-          margin="normal"
-        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="profile-location-label">Country</InputLabel>
+          <Select
+            labelId="profile-location-label"
+            id={`select-location`}
+            name="location"
+            value={profileForm.location}
+            label="Country"
+            onChange={handleChange}
+          >
+            {countries.map((opt) => (
+              <MenuItem key={opt} value={opt}>
+                {opt}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <TextField
           type="text"
