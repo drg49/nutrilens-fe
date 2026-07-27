@@ -113,6 +113,7 @@ const Register = ({ isLoading, setIsLoading }) => {
             change={handleChange}
             value={registerForm.username}
             animate
+            maxLength={25}
           />
           <Input
             type="email"
@@ -123,6 +124,7 @@ const Register = ({ isLoading, setIsLoading }) => {
             value={registerForm.email}
             animate
             preventSpaces
+            maxLength={150}
           />
           <Input
             type="password"
@@ -133,6 +135,7 @@ const Register = ({ isLoading, setIsLoading }) => {
             value={registerForm.password}
             animate
             preventSpaces
+            maxLength={105}
           />
 
           <Button
@@ -161,6 +164,7 @@ const Register = ({ isLoading, setIsLoading }) => {
             change={handleChange}
             value={registerForm.phone_number}
             animate
+            maxLength={20}
           />
 
           <Input
@@ -171,6 +175,7 @@ const Register = ({ isLoading, setIsLoading }) => {
             change={handleChange}
             value={registerForm.location}
             animate
+            maxLength={100}
           />
 
           <Input
@@ -181,6 +186,7 @@ const Register = ({ isLoading, setIsLoading }) => {
             change={handleChange}
             value={registerForm.bio}
             animate
+            maxLength={1000}
           />
 
           <Button

@@ -68,6 +68,7 @@ const Profile = ({ user }) => {
           change={handleChange}
           value={profileForm.username}
           animate
+          maxLength={25}
         />
         <Input
           type="email"
@@ -78,6 +79,7 @@ const Profile = ({ user }) => {
           value={profileForm.email}
           animate
           preventSpaces
+          maxLength={150}
         />
         <Input
           type="tel"
@@ -87,6 +89,7 @@ const Profile = ({ user }) => {
           change={handleChange}
           value={profileForm.phone_number}
           animate
+          maxLength={20}
         />
         <Input
           type="text"
@@ -96,6 +99,7 @@ const Profile = ({ user }) => {
           change={handleChange}
           value={profileForm.location}
           animate
+          maxLength={100}
         />
         <Input
           type="text"
@@ -105,6 +109,7 @@ const Profile = ({ user }) => {
           change={handleChange}
           value={profileForm.bio}
           animate
+          maxLength={1000}
         />
 
         <Button

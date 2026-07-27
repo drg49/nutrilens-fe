@@ -14,6 +14,7 @@ import './index.scss';
  * @param {function} props.change - The onChange event handler.
  * @param {boolean} [props.animate] - Should the input display animated focus borders?
  * @param {boolean} [props.preventSpaces] - Should the input prevent spaces from being entered?
+ * @param {number} [props.maxLength] - The maximum length of the input value.
  */
 const Input = ({
   id,
@@ -25,6 +26,7 @@ const Input = ({
   change,
   animate,
   preventSpaces,
+  maxLength,
 }) => {
   const preventSpace = (e) => {
     if (e.key === ' ') {
@@ -58,7 +60,8 @@ const Input = ({
           value={value ?? ''}
           onChange={change}
           onKeyDown={preventSpaces ? preventSpace : undefined}
-          aria-label={!label ? name : undefined} // Screen reader backup when visual label is absent
+          maxLength={maxLength}
+          aria-label={!label ? name : undefined}
         />
         <span>
           <i></i>
