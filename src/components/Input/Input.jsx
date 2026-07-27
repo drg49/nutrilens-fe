@@ -39,7 +39,7 @@ const Input = ({
   const inputId = id || `input-${name}`;
 
   return (
-    <div className="app-input-wrapper">
+    <div className="app-input-wrapper" id={inputId}>
       {label ? (
         <label htmlFor={inputId} className="app-input-label">
           {label}
@@ -53,7 +53,6 @@ const Input = ({
 
       <div className={`app-input ${animate ? 'animate' : ''}`}>
         <input
-          id={inputId}
           type={type}
           placeholder={placeholder}
           name={name}

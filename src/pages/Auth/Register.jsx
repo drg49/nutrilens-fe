@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 
 import Form from '../../components/Form/Form';
 import Input from '../../components/Input/Input';
+import SingleSelect from '../../components/SingleSelect/SingleSelect';
 import Button from '../../components/Button/Button';
 
 import * as api from '../../api/authentication';
 import { formContainsEmptyValues } from '../../utils/validation';
 import { parseError } from '../../utils/helperMethods';
 import { notifyError } from '../../utils/toastMethods';
-import { TOAST_POSITIONS } from '../../utils/constants';
+import { TOAST_POSITIONS, countries } from '../../utils/constants';
 
 const { TOP_CENTER } = TOAST_POSITIONS;
 
@@ -17,15 +18,15 @@ const Register = ({ isLoading, setIsLoading }) => {
   const [step, setStep] = useState(1);
 
   const [registerForm, setRegisterForm] = useState({
-    // Step 1 Fields (Required by DB constraints)
+    // Step 1 Fields
     username: '',
     email: '',
     password: '',
 
-    // Step 2 Fields (Remaining schema fields)
+    // Step 2 Fields
     phone_number: '',
     bio: '',
-    location: '',
+    location: 'United States',
   });
 
   const handleChange = (e) => {
@@ -44,7 +45,7 @@ const Register = ({ isLoading, setIsLoading }) => {
     password: form.password,
   });
 
-  // Step 2 Data Normalization (Remaining fields only)
+  // Step 2 Data Normalization
   const normalizeProfileData = (form) => ({
     phone_number: form.phone_number.trim() || null,
     bio: form.bio?.trim() || null,
@@ -54,9 +55,9 @@ const Register = ({ isLoading, setIsLoading }) => {
   // Handles Step 1 Submission
   const handleAuthSubmit = async (e) => {
     e?.preventDefault?.();
+
     if (isLoading) return;
 
-    // Checks fields with "NOT NULL" constraints in your database
     if (
       formContainsEmptyValues({
         username: registerForm.username,
@@ -70,7 +71,9 @@ const Register = ({ isLoading, setIsLoading }) => {
 
     try {
       setIsLoading(true);
+
       await api.register(normalizeAuthData(registerForm));
+
       setStep(2);
     } catch (err) {
       notifyError(parseError(err), TOP_CENTER);
@@ -82,11 +85,14 @@ const Register = ({ isLoading, setIsLoading }) => {
   // Handles Step 2 Submission
   const handleProfileSubmit = async (e) => {
     e?.preventDefault?.();
+
     if (isLoading) return;
 
     try {
       setIsLoading(true);
+
       await api.updateUser(normalizeProfileData(registerForm));
+
       window.location.reload();
     } catch (err) {
       notifyError(parseError(err), TOP_CENTER);
@@ -102,9 +108,9 @@ const Register = ({ isLoading, setIsLoading }) => {
     >
       {step === 1 ? (
         <>
-          {/* STEP 1: MANDATORY / AUTH FIELDS */}
           <h2>Create Your Account</h2>
           <br />
+
           <Input
             type="text"
             name="username"
@@ -115,6 +121,7 @@ const Register = ({ isLoading, setIsLoading }) => {
             animate
             maxLength={25}
           />
+
           <Input
             type="email"
             name="email"
@@ -126,6 +133,7 @@ const Register = ({ isLoading, setIsLoading }) => {
             preventSpaces
             maxLength={150}
           />
+
           <Input
             type="password"
             name="password"
@@ -149,11 +157,11 @@ const Register = ({ isLoading, setIsLoading }) => {
         </>
       ) : (
         <>
-          {/* STEP 2: REMAINING SCHEMA FIELDS */}
           <h2>
             Nice to meet you {registerForm.username}! Tell us a bit more about
             yourself.
           </h2>
+
           <br />
 
           <Input
@@ -167,18 +175,16 @@ const Register = ({ isLoading, setIsLoading }) => {
             maxLength={20}
           />
 
-          <Input
-            type="text"
+          <SingleSelect
             name="location"
             label="Country"
-            placeholder="Optional"
-            change={handleChange}
+            options={countries}
             value={registerForm.location}
-            animate
-            maxLength={100}
+            change={handleChange}
           />
 
           <Input
+            id="bio-field"
             type="text"
             name="bio"
             label="Bio"
