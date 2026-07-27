@@ -6,7 +6,6 @@ import { ToastContainer } from 'react-toastify';
 import { validateUser } from './api/authentication';
 import 'react-toastify/dist/ReactToastify.css';
 import BottomNav from './components/BottomNav/BottomNav';
-import Details from './components/Details/Details';
 
 const spinner = (
   <FontAwesomeIcon icon={faSpinner} size="10x" color="gray" spin />
@@ -35,7 +34,6 @@ const App = () => {
       {isLoggedIn && (
         <div className="container">
           <BottomNav />
-          <Details />
           <div className="main">
             <Suspense fallback={spinner}>
               <Routes>
