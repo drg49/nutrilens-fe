@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Form from '../../components/Form/Form';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import { formContainsEmptyValues } from '../../utils/validation';
 import { parseError } from '../../utils/helperMethods';
 import { notifyError } from '../../utils/toastMethods';
@@ -29,37 +30,42 @@ const Login = ({ isLoading, setIsLoading }) => {
 
   return (
     <Form id="login-form">
-      <Input
+      <TextField
         id="login-email"
         label="Email Address"
         type="email"
         placeholder="Email"
         name="email"
         value={loginForm.email}
-        change={handleChange}
-        animate
-        preventSpaces
-        maxLength={150}
+        onChange={handleChange}
+        inputProps={{ maxLength: 150 }}
+        fullWidth
+        margin="normal"
       />
-      <Input
+
+      <TextField
         id="login-password"
         label="Password"
         type="password"
         placeholder="Password"
         name="password"
         value={loginForm.password}
-        change={handleChange}
-        animate
-        preventSpaces
-        maxLength={255}
+        onChange={handleChange}
+        inputProps={{ maxLength: 255 }}
+        fullWidth
+        margin="normal"
       />
+
       <Button
-        text="Login"
         id="login-button"
-        click={handleSubmit}
-        isPrimary
-        isLoading={isLoading}
-      />
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+        disabled={isLoading}
+        type="button"
+      >
+        {isLoading ? <CircularProgress size={18} color="inherit" /> : 'Login'}
+      </Button>
     </Form>
   );
 };

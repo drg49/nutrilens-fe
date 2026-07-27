@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 
 import Form from '../../components/Form/Form';
-import Input from '../../components/Input/Input';
-import SingleSelect from '../../components/SingleSelect/SingleSelect';
-import Button from '../../components/Button/Button';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import * as api from '../../api/authentication';
 import { formContainsEmptyValues } from '../../utils/validation';
@@ -111,49 +115,56 @@ const Register = ({ isLoading, setIsLoading }) => {
           <h2>Create Your Account</h2>
           <br />
 
-          <Input
+          <TextField
             type="text"
             name="username"
             label="Username"
             placeholder="Username *"
-            change={handleChange}
+            onChange={handleChange}
             value={registerForm.username}
-            animate
-            maxLength={25}
+            inputProps={{ maxLength: 25 }}
+            fullWidth
+            margin="normal"
           />
 
-          <Input
+          <TextField
             type="email"
             name="email"
             label="Email Address"
             placeholder="Email *"
-            change={handleChange}
+            onChange={handleChange}
             value={registerForm.email}
-            animate
-            preventSpaces
-            maxLength={150}
+            inputProps={{ maxLength: 150 }}
+            fullWidth
+            margin="normal"
           />
 
-          <Input
+          <TextField
             type="password"
             name="password"
             label="Password"
             placeholder="Password *"
-            change={handleChange}
+            onChange={handleChange}
             value={registerForm.password}
-            animate
-            preventSpaces
-            maxLength={255}
+            inputProps={{ maxLength: 255 }}
+            fullWidth
+            margin="normal"
           />
 
           <Button
-            text="Continue"
             id="register-button"
-            click={handleAuthSubmit}
-            isPrimary
-            isLoading={isLoading}
+            variant="contained"
+            color="primary"
+            onClick={handleAuthSubmit}
             disabled={isLoading}
-          />
+            type="button"
+          >
+            {isLoading ? (
+              <CircularProgress size={18} color="inherit" />
+            ) : (
+              'Continue'
+            )}
+          </Button>
         </>
       ) : (
         <>
@@ -164,45 +175,63 @@ const Register = ({ isLoading, setIsLoading }) => {
 
           <br />
 
-          <Input
+          <TextField
             type="tel"
             name="phone_number"
             label="Phone Number"
             placeholder="Optional"
-            change={handleChange}
+            onChange={handleChange}
             value={registerForm.phone_number}
-            animate
-            maxLength={20}
+            inputProps={{ maxLength: 20 }}
+            fullWidth
+            margin="normal"
           />
 
-          <SingleSelect
-            name="location"
-            label="Country"
-            options={countries}
-            value={registerForm.location}
-            change={handleChange}
-          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="location-label">Country</InputLabel>
+            <Select
+              labelId="location-label"
+              id={`select-location`}
+              name="location"
+              value={registerForm.location}
+              label="Country"
+              onChange={handleChange}
+            >
+              {countries.map((opt) => (
+                <MenuItem key={opt} value={opt}>
+                  {opt}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-          <Input
+          <TextField
             id="bio-field"
             type="text"
             name="bio"
             label="Bio"
             placeholder="Optional"
-            change={handleChange}
+            onChange={handleChange}
             value={registerForm.bio}
-            animate
-            maxLength={1000}
+            inputProps={{ maxLength: 1000 }}
+            fullWidth
+            margin="normal"
           />
 
           <Button
-            text="Complete Profile"
             id="profile-button"
-            click={handleProfileSubmit}
-            isPrimary
-            isLoading={isLoading}
+            variant="contained"
+            color="primary"
+            onClick={handleProfileSubmit}
             disabled={isLoading}
-          />
+            type="button"
+          >
+            {isLoading ? (
+              <CircularProgress size={18} color="inherit" />
+            ) : (
+              'Complete Profile'
+            )}
+          </Button>
         </>
       )}
     </Form>

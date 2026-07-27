@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import * as api from '../../api/authentication';
 import Form from '../../components/Form/Form';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import { notifyError, notifySuccess } from '../../utils/toastMethods';
 import { parseError } from '../../utils/helperMethods';
 import { TOAST_POSITIONS } from '../../utils/constants';
@@ -62,64 +63,78 @@ const Profile = ({ user }) => {
       <Logo />
       <h2>Your Profile</h2>
       <Form id="profile-form" onSubmit={handleSubmit}>
-        <Input
+        <TextField
           type="text"
           name="username"
           label="Username *"
           placeholder="Username"
-          change={handleChange}
+          onChange={handleChange}
           value={profileForm.username}
-          animate
-          maxLength={25}
+          inputProps={{ maxLength: 25 }}
+          fullWidth
+          margin="normal"
         />
-        <Input
+
+        <TextField
           type="email"
           name="email"
           label="Email Address *"
           placeholder="Email Address"
-          change={handleChange}
+          onChange={handleChange}
           value={profileForm.email}
-          animate
-          preventSpaces
-          maxLength={150}
+          inputProps={{ maxLength: 150 }}
+          fullWidth
+          margin="normal"
         />
-        <Input
+
+        <TextField
           type="tel"
           name="phone_number"
           label="Phone Number"
-          change={handleChange}
+          onChange={handleChange}
           value={profileForm.phone_number}
-          animate
-          maxLength={20}
+          inputProps={{ maxLength: 20 }}
+          fullWidth
+          margin="normal"
         />
-        <Input
+
+        <TextField
           type="text"
           name="location"
           label="Country"
-          change={handleChange}
+          onChange={handleChange}
           value={profileForm.location}
-          animate
-          maxLength={100}
+          inputProps={{ maxLength: 100 }}
+          fullWidth
+          margin="normal"
         />
-        <Input
+
+        <TextField
           type="text"
           name="bio"
           label="Bio"
           placeholder="Tell us about yourself..."
-          change={handleChange}
+          onChange={handleChange}
           value={profileForm.bio}
-          animate
-          maxLength={1000}
+          inputProps={{ maxLength: 1000 }}
+          fullWidth
+          margin="normal"
         />
 
         <Button
-          text="Save Changes"
           id="save-profile-button"
-          click={handleSubmit}
-          isPrimary
-          isLoading={isSaving}
+          variant="contained"
+          color="primary"
+          onClick={handleSubmit}
           disabled={isSaving}
-        />
+          type="button"
+        >
+          {isSaving ? (
+            <CircularProgress size={18} color="inherit" />
+          ) : (
+            'Save Changes'
+          )}
+        </Button>
       </Form>
     </div>
   );
