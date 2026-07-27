@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import Form from '../../components/Form';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
+import Form from '../../components/Form/Form';
+import Input from '../../components/Input/Input';
+import Button from '../../components/Button/Button';
 
 import * as api from '../../api/authentication';
 import { formContainsEmptyValues } from '../../utils/validation';

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import * as api from '../../api/authentication';
-import Form from '../../components/Form';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
+import Form from '../../components/Form/Form';
+import Input from '../../components/Input/Input';
+import Button from '../../components/Button/Button';
 import { notifyError, notifySuccess } from '../../utils/toastMethods';
 import { parseError } from '../../utils/helperMethods';
 import { TOAST_POSITIONS } from '../../utils/constants';

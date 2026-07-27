@@ -5,16 +5,16 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer } from 'react-toastify';
 import { validateUser } from './api/authentication';
 import 'react-toastify/dist/ReactToastify.css';
-import SideNav from './components/SideNav';
-import Details from './components/Details';
+import SideNav from './components/SideNav/SideNav';
+import Details from './components/Details/Details';
 
 const spinner = (
   <FontAwesomeIcon icon={faSpinner} size="10x" color="gray" spin />
 );
 
-const Home = lazy(() => import('./pages/Home'));
-const Auth = lazy(() => import('./pages/Auth'));
-const Profile = lazy(() => import('./pages/Profile'));
+const Home = lazy(() => import('./pages/Home/Home'));
+const Auth = lazy(() => import('./pages/Auth/Auth'));
+const Profile = lazy(() => import('./pages/Profile/Profile'));
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(null);

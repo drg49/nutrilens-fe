@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Panel from '../../components/Panel';
+import Panel from '../../components/Panel/Panel';
 import Login from './Login';
 import { AUTH_STATE } from '../../utils/constants';
 import Register from './Register';
-import Logo from '../../components/Logo';
-import './index.scss';
+import Logo from '../../components/Logo/Logo';
+import './Auth.scss';
 
 const { LOGIN, REGISTER } = AUTH_STATE;
 

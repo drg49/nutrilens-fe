@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Form from '../../components/Form';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
+import Form from '../../components/Form/Form';
+import Input from '../../components/Input/Input';
+import Button from '../../components/Button/Button';
 import { formContainsEmptyValues } from '../../utils/validation';
 import { parseError } from '../../utils/helperMethods';
 import { notifyError } from '../../utils/toastMethods';

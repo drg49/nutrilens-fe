@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import './index.scss';
+import './Button.scss';
 
 const spinner = (
   <FontAwesomeIcon icon={faSpinner} className="app-button-spinner" spin />

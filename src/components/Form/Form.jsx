@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.scss';
+import './Form.scss';
 
 /**
  * A form component that can be used to wrap form elements.

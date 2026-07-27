@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import './index.scss';
 import data from './links';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; // Imported a logout icon
-import Logo from '../Logo';
+import Logo from '../Logo/Logo';
 import { logout } from '../../api/authentication'; // Imported the logout function
+import './SideNav.scss';
 
 const LinkWithIcon = ({ name, icon, link, currentPath }) => {
   const cssClass = `side-nav-link${currentPath === link ? ' active' : ''}`;
@@ -49,7 +49,7 @@ const SideNav = () => {
         style={{ cursor: 'pointer' }}
       >
         <FontAwesomeIcon icon={faSignOutAlt} />
-        <span className='logout-txt'>Logout</span>
+        <span className="logout-txt">Logout</span>
       </div>
     </nav>
   );
