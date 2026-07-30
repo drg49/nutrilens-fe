@@ -1,0 +1,30 @@
+.capture-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.capture-video-wrapper {
+  width: 100%;
+  max-width: 480px;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.capture-video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.capture-error {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 0, 0, 0.08);
+  color: #900;
+  border-radius: 12px;
+  text-align: center;
+}

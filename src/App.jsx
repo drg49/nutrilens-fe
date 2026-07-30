@@ -18,6 +18,7 @@ const spinner = (
 const Home = lazy(() => import('./pages/Home/Home'));
 const Auth = lazy(() => import('./pages/Auth/Auth'));
 const Profile = lazy(() => import('./pages/Profile/Profile'));
+const Capture = lazy(() => import('./pages/Capture/Capture'));
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -50,6 +51,7 @@ const App = () => {
               <Suspense fallback={spinner}>
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="/capture" element={<Capture />} />
                   <Route path="/profile" element={<Profile user={user} />} />
                 </Routes>
               </Suspense>
