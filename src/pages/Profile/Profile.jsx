@@ -15,8 +15,7 @@ import Logo from '../../components/Logo/Logo';
 
 const { TOP_CENTER } = TOAST_POSITIONS;
 
-const Profile = ({ user }) => {
-  console.log('Profile component received user:', user); // Debugging log
+const Profile = ({ user, setIsLoggedIn }) => {
   // Manage submission loading state locally
   const [isSaving, setIsSaving] = useState(false);
 
@@ -64,7 +63,7 @@ const Profile = ({ user }) => {
 
   const handleLogout = async () => {
     try {
-      await api.logout();
+      await api.logout(setIsLoggedIn);
     } catch (err) {
       notifyError(parseError(err), TOP_CENTER);
     }

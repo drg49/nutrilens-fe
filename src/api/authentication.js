@@ -52,7 +52,7 @@ export const updateUser = async (formData) =>
     }),
   );
 
-export const logout = async () =>
+export const logout = async (setIsLoggedIn) =>
   handleResponse(
     await fetch(`${root}/logout`, {
       method: 'POST',
@@ -60,7 +60,7 @@ export const logout = async () =>
     }),
   ).then(() => {
     localStorage.removeItem('token');
-    window.location.reload();
+    setIsLoggedIn(false);
   });
 
 export const validateUser = async () =>

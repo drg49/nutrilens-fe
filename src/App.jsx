@@ -68,13 +68,18 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/capture" element={<Capture />} />
-                  <Route path="/profile" element={<Profile user={user} />} />
+                  <Route
+                    path="/profile"
+                    element={
+                      <Profile user={user} setIsLoggedIn={setIsLoggedIn} />
+                    }
+                  />
                 </Routes>
               </Suspense>
             </div>
           </div>
         )}
-        {isLoggedIn === false && <Auth />}
+        {isLoggedIn === false && <Auth setIsLoggedIn={setIsLoggedIn} />}
         {isLoggedIn === null && <div id="main-spinner">{spinner}</div>}
         <ToastContainer limit={3} />
       </>

@@ -18,7 +18,7 @@ import { TOAST_POSITIONS, countries } from '../../utils/constants';
 
 const { TOP_CENTER } = TOAST_POSITIONS;
 
-const Register = ({ isLoading, setIsLoading }) => {
+const Register = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
   // Track the registration step (1: Required Credentials, 2: Remaining Optional Details)
   const [step, setStep] = useState(1);
 
@@ -98,7 +98,7 @@ const Register = ({ isLoading, setIsLoading }) => {
 
       await api.updateUser(normalizeProfileData(registerForm));
 
-      window.location.reload();
+      setIsLoggedIn(true);
     } catch (err) {
       notifyError(parseError(err), TOP_CENTER);
     } finally {

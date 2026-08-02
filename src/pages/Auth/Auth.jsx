@@ -8,7 +8,7 @@ import './Auth.scss';
 
 const { LOGIN, REGISTER } = AUTH_STATE;
 
-const Auth = () => {
+const Auth = ({ setIsLoggedIn }) => {
   const [formState, setFormState] = useState(LOGIN);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,7 +21,11 @@ const Auth = () => {
     </span>
   );
 
-  const props = { isLoading: isLoading, setIsLoading: setIsLoading };
+  const props = {
+    isLoading: isLoading,
+    setIsLoading: setIsLoading,
+    setIsLoggedIn: setIsLoggedIn,
+  };
 
   return (
     <>

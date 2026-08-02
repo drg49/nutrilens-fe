@@ -11,7 +11,7 @@ import * as api from '../../api/authentication';
 
 const { TOP_CENTER } = TOAST_POSITIONS;
 
-const Login = ({ isLoading, setIsLoading }) => {
+const Login = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
 
   const handleSubmit = () => {
@@ -19,7 +19,7 @@ const Login = ({ isLoading, setIsLoading }) => {
       setIsLoading(true);
       api
         .login(loginForm)
-        .then(() => window.location.reload())
+        .then(() => setIsLoggedIn(true))
         .catch((err) => notifyError(parseError(err), TOP_CENTER))
         .finally(() => setIsLoading(false));
     }
