@@ -1,39 +1,53 @@
 import { handleResponse } from '../utils/helperMethods';
+
 const root = process.env.REACT_APP_API_ROOT_URL + '/authentication';
 
-export const login = async (formData) =>
-  handleResponse(
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+
+  return {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+};
+
+export const login = async (formData) => {
+  const response = await handleResponse(
     await fetch(`${root}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
       body: JSON.stringify(formData),
     }),
   );
 
-export const register = async (formData) =>
-  handleResponse(
+  localStorage.setItem('token', response.access_token);
+
+  return response;
+};
+
+export const register = async (formData) => {
+  const response = await handleResponse(
     await fetch(`${root}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include',
       body: JSON.stringify(formData),
     }),
   );
 
-// 🆕 Added updateUser function for step 2 details
+  localStorage.setItem('token', response.access_token);
+
+  return response;
+};
+
 export const updateUser = async (formData) =>
   handleResponse(
     await fetch(`${root}/update-user`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
+      headers: getAuthHeaders(),
       body: JSON.stringify(formData),
     }),
   );
@@ -42,14 +56,17 @@ export const logout = async () =>
   handleResponse(
     await fetch(`${root}/logout`, {
       method: 'POST',
-      credentials: 'include',
+      headers: getAuthHeaders(),
     }),
-  ).then(() => window.location.reload());
+  ).then(() => {
+    localStorage.removeItem('token');
+    window.location.reload();
+  });
 
 export const validateUser = async () =>
   handleResponse(
     await fetch(`${root}/validate-user`, {
       method: 'GET',
-      credentials: 'include',
+      headers: getAuthHeaders(),
     }),
   );

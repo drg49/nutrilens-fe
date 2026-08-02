@@ -31,13 +31,29 @@ const App = () => {
   });
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    // No JWT means user is logged out
+    if (!token) {
+      setIsLoggedIn(false);
+      return;
+    }
+
     validateUser()
       .then((data) => {
         console.log('User validated:', data);
+
         setUser(data.user);
         setIsLoggedIn(true);
       })
-      .catch(() => setIsLoggedIn(false));
+      .catch((error) => {
+        console.error('Token validation failed:', error);
+
+        localStorage.removeItem('token');
+
+        setUser(null);
+        setIsLoggedIn(false);
+      });
   }, []);
 
   return (
