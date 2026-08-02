@@ -32,6 +32,12 @@ const Auth = ({ setIsLoggedIn }) => {
       <Panel id="auth-form" size="lg" closable={false}>
         <Logo />
         {formState === LOGIN ? <Login {...props} /> : <Register {...props} />}
+        {isLoading && (
+          <div className="auth-loading-text">
+            Our free server may take up to 45 seconds to wake up. Please wait
+            while we log you in! :)
+          </div>
+        )}
         {!isLoading &&
           (formState === LOGIN ? link('Sign up now') : link('Login'))}
       </Panel>

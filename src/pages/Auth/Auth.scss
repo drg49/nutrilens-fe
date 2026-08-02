@@ -33,4 +33,13 @@ body {
   .app-button {
     margin-top: 2rem;
   }
+
+  .auth-loading-text {
+    margin: 1rem auto 0;
+    max-width: 320px;
+    color: #c4302b;
+    font-size: 0.95rem;
+    text-align: center;
+    line-height: 1.4;
+  }
 }
