@@ -11,7 +11,7 @@ const Capture = () => {
     const startCamera = async () => {
       try {
         stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'user' },
+          video: { facingMode: 'environment' },
           audio: false,
         });
 
@@ -21,7 +21,7 @@ const Capture = () => {
       } catch (err) {
         console.error('Camera access failed:', err);
         setError(
-          'Unable to access the front camera. Please allow camera permission and try again.',
+          'Unable to access the camera. Please allow camera permission and try again.',
         );
       }
     };
@@ -37,19 +37,25 @@ const Capture = () => {
 
   return (
     <div className="capture-page">
-      <h1>Capture</h1>
       {error ? (
         <div className="capture-error">{error}</div>
       ) : (
-        <div className="capture-video-wrapper">
-          <video
-            ref={videoRef}
-            className="capture-video"
-            autoPlay
-            playsInline
-            muted
-          />
-        </div>
+        <>
+          <div className="capture-camera-section">
+            <div className="capture-video-wrapper">
+              <video
+                ref={videoRef}
+                className="capture-video"
+                autoPlay
+                playsInline
+                muted
+              />
+            </div>
+          </div>
+          <div className="capture-details-section">
+            {/* Details panel placeholder: buttons/text will be added later */}
+          </div>
+        </>
       )}
     </div>
   );
