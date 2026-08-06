@@ -1,37 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import Form from '../../components/Form/Form';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
+import Form from "../../components/Form/Form";
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
 
-import * as api from '../../api/authentication';
-import { formContainsEmptyValues } from '../../utils/validation';
-import { parseError } from '../../utils/helperMethods';
-import { notifyError } from '../../utils/toastMethods';
-import { TOAST_POSITIONS, countries } from '../../utils/constants';
+import * as api from "../../api/authentication";
+import { useAuth } from "../../context/AuthContext";
+import { formContainsEmptyValues } from "../../utils/validation";
+import { parseError } from "../../utils/helperMethods";
+import { notifyError } from "../../utils/toastMethods";
+import { TOAST_POSITIONS, countries } from "../../utils/constants";
 
 const { TOP_CENTER } = TOAST_POSITIONS;
 
-const Register = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
+const Register = ({ isLoading, setIsLoading }) => {
   // Track the registration step (1: Required Credentials, 2: Remaining Optional Details)
   const [step, setStep] = useState(1);
 
   const [registerForm, setRegisterForm] = useState({
     // Step 1 Fields
-    username: '',
-    email: '',
-    password: '',
+    username: "",
+    email: "",
+    password: "",
 
     // Step 2 Fields
-    phone_number: '',
-    bio: '',
-    location: 'United States',
+    phone_number: "",
+    bio: "",
+    location: "United States",
   });
 
   const handleChange = (e) => {
@@ -57,6 +58,8 @@ const Register = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
     location: form.location.trim() || null,
   });
 
+  const { setIsLoggedIn, setUser } = useAuth();
+
   // Handles Step 1 Submission
   const handleAuthSubmit = async (e) => {
     e?.preventDefault?.();
@@ -70,15 +73,16 @@ const Register = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
         password: registerForm.password,
       })
     ) {
-      notifyError('Please fill required fields', TOP_CENTER);
+      notifyError("Please fill required fields", TOP_CENTER);
       return;
     }
 
     try {
       setIsLoading(true);
 
-      await api.register(normalizeAuthData(registerForm));
+      const response = await api.register(normalizeAuthData(registerForm));
 
+      setUser(response.user);
       setStep(2);
     } catch (err) {
       notifyError(parseError(err), TOP_CENTER);
@@ -96,7 +100,11 @@ const Register = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
     try {
       setIsLoading(true);
 
-      await api.updateUser(normalizeProfileData(registerForm));
+      const response = await api.updateUser(normalizeProfileData(registerForm));
+
+      if (response?.user) {
+        setUser(response.user);
+      }
 
       setIsLoggedIn(true);
     } catch (err) {
@@ -163,7 +171,7 @@ const Register = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
             {isLoading ? (
               <CircularProgress size={18} color="inherit" />
             ) : (
-              'Continue'
+              "Continue"
             )}
           </Button>
         </>
@@ -229,7 +237,7 @@ const Register = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
             {isLoading ? (
               <CircularProgress size={18} color="inherit" />
             ) : (
-              'Complete Profile'
+              "Complete Profile"
             )}
           </Button>
         </>

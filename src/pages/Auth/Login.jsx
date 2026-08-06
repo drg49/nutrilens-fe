@@ -1,25 +1,30 @@
-import React, { useState } from 'react';
-import Form from '../../components/Form/Form';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import { formContainsEmptyValues } from '../../utils/validation';
-import { parseError } from '../../utils/helperMethods';
-import { notifyError } from '../../utils/toastMethods';
-import { TOAST_POSITIONS } from '../../utils/constants';
-import * as api from '../../api/authentication';
+import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import Form from "../../components/Form/Form";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import { formContainsEmptyValues } from "../../utils/validation";
+import { parseError } from "../../utils/helperMethods";
+import { notifyError } from "../../utils/toastMethods";
+import { TOAST_POSITIONS } from "../../utils/constants";
+import * as api from "../../api/authentication";
 
 const { TOP_CENTER } = TOAST_POSITIONS;
 
-const Login = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
-  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
+const Login = ({ isLoading, setIsLoading }) => {
+  const { setIsLoggedIn, setUser } = useAuth();
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
 
   const handleSubmit = () => {
     if (!formContainsEmptyValues(loginForm)) {
       setIsLoading(true);
       api
         .login(loginForm)
-        .then(() => setIsLoggedIn(true))
+        .then((data) => {
+          setIsLoggedIn(true);
+          setUser(data.user);
+        })
         .catch((err) => notifyError(parseError(err), TOP_CENTER))
         .finally(() => setIsLoading(false));
     }
@@ -41,7 +46,7 @@ const Login = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
         inputProps={{ maxLength: 150 }}
         fullWidth
         margin="normal"
-        sx={{ backgroundColor: 'white' }}
+        sx={{ backgroundColor: "white" }}
       />
 
       <TextField
@@ -55,7 +60,7 @@ const Login = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
         inputProps={{ maxLength: 255 }}
         fullWidth
         margin="normal"
-        sx={{ backgroundColor: 'white' }}
+        sx={{ backgroundColor: "white" }}
       />
 
       <Button
@@ -67,7 +72,7 @@ const Login = ({ isLoading, setIsLoading, setIsLoggedIn }) => {
         fullWidth
         sx={{ marginTop: 2 }}
       >
-        {isLoading ? <CircularProgress size={18} color="inherit" /> : 'Login'}
+        {isLoading ? <CircularProgress size={18} color="inherit" /> : "Login"}
       </Button>
     </Form>
   );

@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
-import * as api from '../../api/authentication';
-import Form from '../../components/Form/Form';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import CircularProgress from '@mui/material/CircularProgress';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import { notifyError, notifySuccess } from '../../utils/toastMethods';
-import { parseError } from '../../utils/helperMethods';
-import { TOAST_POSITIONS, countries } from '../../utils/constants';
-import Logo from '../../components/Logo/Logo';
+import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import * as api from "../../api/authentication";
+import Form from "../../components/Form/Form";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import { notifyError, notifySuccess } from "../../utils/toastMethods";
+import { parseError } from "../../utils/helperMethods";
+import { TOAST_POSITIONS, countries } from "../../utils/constants";
+import Logo from "../../components/Logo/Logo";
 
 const { TOP_CENTER } = TOAST_POSITIONS;
 
-const Profile = ({ user, setIsLoggedIn }) => {
-  // Manage submission loading state locally
+const Profile = () => {
+  const { user, setUser, setIsLoggedIn } = useAuth();
   const [isSaving, setIsSaving] = useState(false);
 
   const [profileForm, setProfileForm] = useState({
-    username: user?.username || '',
-    email: user?.email || '',
-    phone_number: user?.phoneNumber || '',
-    location: user?.location || '',
-    bio: user?.bio || '',
+    username: user?.username || "",
+    email: user?.email || "",
+    phone_number: user?.phoneNumber || "",
+    location: user?.location || "",
+    bio: user?.bio || "",
   });
 
   const handleChange = (e) => {
@@ -40,7 +41,7 @@ const Profile = ({ user, setIsLoggedIn }) => {
     if (isSaving) return;
 
     if (!profileForm.username.trim() || !profileForm.email.trim()) {
-      notifyError('Username and Email are required.', TOP_CENTER);
+      notifyError("Username and Email are required.", TOP_CENTER);
       return;
     }
 
@@ -53,7 +54,7 @@ const Profile = ({ user, setIsLoggedIn }) => {
       };
 
       await api.updateUser(payload);
-      notifySuccess('Profile updated successfully!', TOP_CENTER);
+      notifySuccess("Profile updated successfully!", TOP_CENTER);
     } catch (err) {
       notifyError(parseError(err), TOP_CENTER);
     } finally {
@@ -63,7 +64,9 @@ const Profile = ({ user, setIsLoggedIn }) => {
 
   const handleLogout = async () => {
     try {
-      await api.logout(setIsLoggedIn);
+      await api.logout();
+      setIsLoggedIn(false);
+      setUser(null);
     } catch (err) {
       notifyError(parseError(err), TOP_CENTER);
     }
@@ -74,9 +77,9 @@ const Profile = ({ user, setIsLoggedIn }) => {
       <Logo />
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
         <h2>Your Profile</h2>
@@ -163,7 +166,7 @@ const Profile = ({ user, setIsLoggedIn }) => {
           {isSaving ? (
             <CircularProgress size={18} color="inherit" />
           ) : (
-            'Save Changes'
+            "Save Changes"
           )}
         </Button>
       </Form>

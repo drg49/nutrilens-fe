@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import Panel from '../../components/Panel/Panel';
-import Login from './Login';
-import { AUTH_STATE } from '../../utils/constants';
-import Register from './Register';
-import Logo from '../../components/Logo/Logo';
-import './Auth.scss';
+import React, { useState } from "react";
+import Panel from "../../components/Panel/Panel";
+import Login from "./Login";
+import { AUTH_STATE } from "../../utils/constants";
+import Register from "./Register";
+import Logo from "../../components/Logo/Logo";
+import "./Auth.scss";
 
 const { LOGIN, REGISTER } = AUTH_STATE;
 
-const Auth = ({ setIsLoggedIn }) => {
+const Auth = () => {
   const [formState, setFormState] = useState(LOGIN);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,9 +22,8 @@ const Auth = ({ setIsLoggedIn }) => {
   );
 
   const props = {
-    isLoading: isLoading,
-    setIsLoading: setIsLoading,
-    setIsLoggedIn: setIsLoggedIn,
+    isLoading,
+    setIsLoading,
   };
 
   return (
@@ -39,7 +38,7 @@ const Auth = ({ setIsLoggedIn }) => {
           </div>
         )}
         {!isLoading &&
-          (formState === LOGIN ? link('Sign up now') : link('Login'))}
+          (formState === LOGIN ? link("Sign up now") : link("Login"))}
       </Panel>
     </>
   );

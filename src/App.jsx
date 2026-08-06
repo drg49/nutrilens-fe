@@ -1,13 +1,14 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ToastContainer } from 'react-toastify';
-import { validateUser } from './api/authentication';
-import 'react-toastify/dist/ReactToastify.css';
-import BottomNav from './components/BottomNav/BottomNav';
+import React, { lazy, Suspense, useEffect, useState } from "react";
+import { Routes, Route } from "react-router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ToastContainer } from "react-toastify";
+import { validateUser } from "./api/authentication";
+import { AuthProvider } from "./context/AuthContext";
+import "react-toastify/dist/ReactToastify.css";
+import BottomNav from "./components/BottomNav/BottomNav";
 
 const spinner = (
   <div className="spinner-wrapper">
@@ -15,10 +16,10 @@ const spinner = (
   </div>
 );
 
-const Home = lazy(() => import('./pages/Home/Home'));
-const Auth = lazy(() => import('./pages/Auth/Auth'));
-const Profile = lazy(() => import('./pages/Profile/Profile'));
-const Capture = lazy(() => import('./pages/Capture/Capture'));
+const Home = lazy(() => import("./pages/Home/Home"));
+const Auth = lazy(() => import("./pages/Auth/Auth"));
+const Profile = lazy(() => import("./pages/Profile/Profile"));
+const Capture = lazy(() => import("./pages/Capture/Capture"));
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -26,12 +27,12 @@ const App = () => {
 
   const theme = createTheme({
     palette: {
-      mode: 'light',
+      mode: "light",
     },
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
 
     // No JWT means user is logged out
     if (!token) {
@@ -41,15 +42,15 @@ const App = () => {
 
     validateUser()
       .then((data) => {
-        console.log('User validated:', data);
+        console.log("User validated:", data);
 
         setUser(data.user);
         setIsLoggedIn(true);
       })
       .catch((error) => {
-        console.error('Token validation failed:', error);
+        console.error("Token validation failed:", error);
 
-        localStorage.removeItem('token');
+        localStorage.removeItem("token");
 
         setUser(null);
         setIsLoggedIn(false);
@@ -59,30 +60,30 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <>
-        {isLoggedIn && (
-          <div className="container">
-            <BottomNav />
-            <div className="main">
-              <Suspense fallback={spinner}>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/capture" element={<Capture />} />
-                  <Route
-                    path="/profile"
-                    element={
-                      <Profile user={user} setIsLoggedIn={setIsLoggedIn} />
-                    }
-                  />
-                </Routes>
-              </Suspense>
+      <AuthProvider value={{ user, setUser, isLoggedIn, setIsLoggedIn }}>
+        <>
+          {isLoggedIn && (
+            <div className="container">
+              <BottomNav />
+              <div className="main">
+                <Suspense fallback={spinner}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/capture" element={<Capture />} />
+                    <Route
+                      path="/profile"
+                      element={<Profile setIsLoggedIn={setIsLoggedIn} />}
+                    />
+                  </Routes>
+                </Suspense>
+              </div>
             </div>
-          </div>
-        )}
-        {isLoggedIn === false && <Auth setIsLoggedIn={setIsLoggedIn} />}
-        {isLoggedIn === null && <div id="main-spinner">{spinner}</div>}
-        <ToastContainer limit={3} />
-      </>
+          )}
+          {isLoggedIn === false && <Auth setIsLoggedIn={setIsLoggedIn} />}
+          {isLoggedIn === null && <div id="main-spinner">{spinner}</div>}
+          <ToastContainer limit={3} />
+        </>
+      </AuthProvider>
     </ThemeProvider>
   );
 };
