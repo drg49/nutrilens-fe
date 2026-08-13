@@ -38,12 +38,6 @@
   display: block;
 }
 
-.capture-details-section {
-  min-height: 0;
-  background: transparent;
-  display: none; /* keep controls minimal; FAB handles upload */
-}
-
 .photo-overlay {
   position: absolute;
   top: 0;
@@ -61,19 +55,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-/* details section intentionally empty */
-
-.capture-button,
-.upload-button,
-.retake-button {
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
 }
 
 .capture-file-label input {
@@ -95,51 +76,4 @@
   border-radius: 12px;
   text-align: center;
   margin: 1rem;
-}
-
-/* Top-left red X button for retake */
-.close-btn {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 1060;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #e53935;
-  color: #fff;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-  font-size: 18px;
-}
-
-.close-btn:active {
-  transform: scale(0.98);
-}
-
-/* Floating Upload FAB */
-.upload-fab {
-  position: fixed;
-  right: 16px;
-  bottom: 88px; /* above bottom nav and camera button */
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-  z-index: 1050;
-  font-size: 20px;
-}
-
-.upload-fab:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }

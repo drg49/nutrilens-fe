@@ -1,13 +1,20 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { uploadPersonalRecipeImage } from "../../api/personal-recipes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload, faTimes } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUpload,
+  faTimes,
+  faWandMagicSparkles,
+} from "@fortawesome/free-solid-svg-icons";
+import { IconButton } from "@mui/material";
 import { useCamera } from "../../context/CameraContext";
 import "./Capture.scss";
 
 const Capture = () => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
+
+  const fileInputRef = useRef(null);
 
   const [error, setError] = useState(null);
   const [photoUrl, setPhotoUrl] = useState(null);
@@ -253,14 +260,24 @@ const Capture = () => {
 
           {photoCaptured && photoUrl && (
             <div className="photo-overlay">
-              <button
-                type="button"
-                className="close-btn"
+              <IconButton
                 onClick={handleRetake}
                 aria-label="Retake photo"
+                sx={{
+                  position: "absolute",
+                  top: 16,
+                  right: 16,
+                  zIndex: 10,
+                  backgroundColor: "#d32f2f",
+                  color: "white",
+                  borderRadius: "4px",
+                  "&:hover": {
+                    backgroundColor: "#b71c1c",
+                  },
+                }}
               >
                 <FontAwesomeIcon icon={faTimes} />
-              </button>
+              </IconButton>
 
               <img src={photoUrl} alt="Captured" />
             </div>
@@ -268,17 +285,53 @@ const Capture = () => {
         </div>
       </div>
 
-      <div className="capture-details-section" />
+      {/* Hidden file input for selecting images from user's computer */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileInput}
+        style={{ display: "none" }}
+        aria-label="Select image from device"
+      />
 
-      <button
-        type="button"
-        className="upload-fab"
-        onClick={uploadImage}
-        disabled={uploading || !photoBlob}
-        aria-label="Upload photo"
-      >
-        <FontAwesomeIcon icon={faUpload} />
-      </button>
+      {/* Button to select from computer or generate recipe */}
+      {photoCaptured && photoBlob ? (
+        <IconButton
+          onClick={uploadImage}
+          disabled={uploading}
+          aria-label="Generate recipe from photo"
+          sx={{
+            position: "absolute",
+            bottom: 16,
+            right: 16,
+            zIndex: 10,
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            "&:hover": {
+              backgroundColor: "rgba(255, 255, 255, 1)",
+            },
+          }}
+        >
+          <FontAwesomeIcon icon={faWandMagicSparkles} />
+        </IconButton>
+      ) : (
+        <IconButton
+          onClick={() => fileInputRef.current?.click()}
+          aria-label="Select image from device"
+          sx={{
+            position: "absolute",
+            bottom: 16,
+            right: 16,
+            zIndex: 10,
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            "&:hover": {
+              backgroundColor: "rgba(255, 255, 255, 1)",
+            },
+          }}
+        >
+          <FontAwesomeIcon icon={faUpload} />
+        </IconButton>
+      )}
     </div>
   );
 };
