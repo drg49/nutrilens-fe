@@ -1,18 +1,21 @@
 .capture-page {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 72px);
+  /* leave room for the fixed bottom nav (64px) */
+  min-height: calc(100vh - 64px);
+  height: calc(100vh - 64px);
   padding: 0;
   margin: 0;
+  position: relative;
 }
 
 .capture-camera-section {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  padding: 0.5rem;
+  padding: 0;
 }
 
 .capture-video-wrapper {
@@ -32,11 +35,13 @@
   height: 100%;
   object-fit: cover;
   z-index: 1;
+  display: block;
 }
 
 .capture-details-section {
-  min-height: 140px;
-  background: #f5f5f5;
+  min-height: 0;
+  background: transparent;
+  display: none; /* keep controls minimal; FAB handles upload */
 }
 
 .photo-overlay {
@@ -96,4 +101,28 @@
   border-radius: 12px;
   text-align: center;
   margin: 1rem;
+}
+
+/* Floating Upload FAB */
+.upload-fab {
+  position: fixed;
+  right: 16px;
+  bottom: 88px; /* above bottom nav and camera button */
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  z-index: 1050;
+  font-size: 20px;
+}
+
+.upload-fab:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

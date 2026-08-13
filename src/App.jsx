@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { CameraProvider } from "./context/CameraContext";
 import "react-toastify/dist/ReactToastify.css";
 import BottomNav from "./components/BottomNav/BottomNav";
 
@@ -57,7 +58,9 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AuthProvider>
-        <AppContent />
+        <CameraProvider>
+          <AppContent />
+        </CameraProvider>
       </AuthProvider>
     </ThemeProvider>
   );

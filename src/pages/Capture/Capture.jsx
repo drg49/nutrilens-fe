@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { uploadPersonalRecipeImage } from "../../api/personal-recipes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { useCamera } from "../../context/CameraContext";
 import "./Capture.scss";
 
 const Capture = () => {
@@ -9,7 +12,6 @@ const Capture = () => {
   const [photoUrl, setPhotoUrl] = useState(null);
   const [photoBlob, setPhotoBlob] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
   const [photoCaptured, setPhotoCaptured] = useState(false);
 
   const startCamera = async () => {
@@ -50,10 +52,11 @@ const Capture = () => {
         URL.revokeObjectURL(photoUrl);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const capturePhoto = () => {
-    if (!videoRef.current) {
+    if (!videoRef.current || photoCaptured) {
       return;
     }
 
@@ -61,20 +64,10 @@ const Capture = () => {
     const width = video.videoWidth;
     const height = video.videoHeight;
 
-    if (!width || !height) {
-      setError("Unable to capture a photo right now. Please try again.");
-      return;
-    }
-
     const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
     const context = canvas.getContext("2d");
-
-    if (!context) {
-      setError("Unable to capture a photo right now.");
-      return;
-    }
 
     context.drawImage(video, 0, 0, width, height);
 
@@ -92,7 +85,6 @@ const Capture = () => {
         const url = URL.createObjectURL(blob);
         setPhotoUrl(url);
         setPhotoBlob(blob);
-        setSuccessMessage("Photo captured. Ready to upload.");
         setPhotoCaptured(true);
 
         // stop camera to freeze and free device
@@ -114,6 +106,13 @@ const Capture = () => {
     );
   };
 
+  const camera = useCamera();
+
+  // register the capture handler with camera context so BottomNav can trigger it
+  useEffect(() => {
+    camera.registerSnapHandler(capturePhoto);
+  }, [camera, capturePhoto]);
+
   const handleRetake = async () => {
     // clear the captured photo and restart camera
     if (photoUrl) {
@@ -122,7 +121,6 @@ const Capture = () => {
     setPhotoUrl(null);
     setPhotoBlob(null);
     setPhotoCaptured(false);
-    setSuccessMessage("");
     setError("");
 
     await startCamera();
@@ -142,7 +140,6 @@ const Capture = () => {
 
     setPhotoBlob(file);
     setPhotoUrl(URL.createObjectURL(file));
-    setSuccessMessage("Photo selected. Ready to upload.");
   };
 
   const uploadImage = async () => {
@@ -153,12 +150,10 @@ const Capture = () => {
 
     setUploading(true);
     setError("");
-    setSuccessMessage("");
 
     try {
       await uploadPersonalRecipeImage(photoBlob);
 
-      setSuccessMessage("Photo uploaded successfully.");
       setPhotoBlob(null);
       if (photoUrl) {
         URL.revokeObjectURL(photoUrl);
@@ -172,14 +167,9 @@ const Capture = () => {
     }
   };
 
-  console.log(photoCaptured, photoUrl, photoBlob);
-
   return (
     <div className="capture-page">
       {error && <div className="capture-error">{error}</div>}
-      {successMessage && (
-        <div className="capture-success">{successMessage}</div>
-      )}
       <div className="capture-camera-section">
         <div className="capture-video-wrapper">
           <video
@@ -200,26 +190,6 @@ const Capture = () => {
       </div>
 
       <div className="capture-details-section">
-        {!photoCaptured && (
-          <button
-            type="button"
-            className="capture-button"
-            onClick={capturePhoto}
-          >
-            Capture Photo
-          </button>
-        )}
-
-        <label className="capture-file-label">
-          Choose Image
-          <input
-            type="file"
-            accept="image/*"
-            capture="environment"
-            onChange={handleFileInput}
-          />
-        </label>
-
         <button
           type="button"
           className="upload-button"
@@ -241,6 +211,17 @@ const Capture = () => {
           </div>
         )}
       </div>
+
+      {/* floating upload FAB positioned above bottom nav */}
+      <button
+        type="button"
+        className="upload-fab"
+        onClick={uploadImage}
+        disabled={uploading || !photoBlob}
+        aria-label="Upload photo"
+      >
+        <FontAwesomeIcon icon={faUpload} />
+      </button>
     </div>
   );
 };

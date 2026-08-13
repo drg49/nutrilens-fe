@@ -1,12 +1,13 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import data from './links';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCamera } from '@fortawesome/free-solid-svg-icons';
-import './BottomNav.scss';
+import React from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import data from "./links";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import "./BottomNav.scss";
+import { useCamera } from "../../context/CameraContext";
 
 const LinkWithIcon = ({ name, icon, link, currentPath }) => {
-  const cssClass = `bottom-nav-link${currentPath === link ? ' active' : ''}`;
+  const cssClass = `bottom-nav-link${currentPath === link ? " active" : ""}`;
   return (
     <Link to={link} className={cssClass}>
       <FontAwesomeIcon icon={icon} />
@@ -20,6 +21,19 @@ const BottomNav = () => {
 
   const left = data[0];
   const right = data[1];
+
+  const navigate = useNavigate();
+  const camera = useCamera();
+
+  const handleCameraClick = (e) => {
+    e.preventDefault();
+    if (location.pathname === "/capture") {
+      // trigger the registered capture handler via context
+      camera.snap();
+    } else {
+      navigate("/capture");
+    }
+  };
 
   return (
     <nav className="bottom-nav">
@@ -36,11 +50,16 @@ const BottomNav = () => {
         </div>
 
         <div className="center-action">
-          <Link to="/capture" className="camera-btn" aria-label="Capture">
+          <button
+            type="button"
+            className="camera-btn"
+            aria-label="Capture"
+            onClick={handleCameraClick}
+          >
             <div className="camera-inner">
               <FontAwesomeIcon icon={faCamera} />
             </div>
-          </Link>
+          </button>
         </div>
 
         <div className="right-item">
