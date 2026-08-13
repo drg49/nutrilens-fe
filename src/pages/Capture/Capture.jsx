@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { uploadPersonalRecipeImage } from "../../api/personal-recipes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -8,16 +8,48 @@ import "./Capture.scss";
 const Capture = () => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
+
   const [error, setError] = useState(null);
   const [photoUrl, setPhotoUrl] = useState(null);
   const [photoBlob, setPhotoBlob] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [photoCaptured, setPhotoCaptured] = useState(false);
 
-  const startCamera = async () => {
+  const camera = useCamera();
+
+  /**
+   * Stop the current camera stream.
+   */
+  const stopCamera = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
+    }
+
+    if (videoRef.current) {
+      try {
+        videoRef.current.pause();
+        videoRef.current.srcObject = null;
+      } catch (err) {
+        console.error("Unable to stop video:", err);
+      }
+    }
+  }, []);
+
+  /**
+   * Start the device camera.
+   */
+  const startCamera = useCallback(async () => {
     try {
+      setError(null);
+
+      // Make sure an existing stream is stopped first.
+      stopCamera();
+
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" },
+        video: {
+          facingMode: "environment",
+        },
         audio: false,
       });
 
@@ -25,49 +57,79 @@ const Capture = () => {
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        // ensure playback
+
         try {
           await videoRef.current.play();
-        } catch (e) {
-          // ignore autoplay/play promise errors
+        } catch (err) {
+          // Browser may reject autoplay. The video element
+          // has autoPlay/playsInline/muted set, so we can safely ignore this.
         }
       }
     } catch (err) {
       console.error("Camera access failed:", err);
+
       setError(
         "Unable to access the camera. Please allow camera permission and try again.",
       );
     }
-  };
+  }, [stopCamera]);
 
+  /**
+   * Start the camera when the component mounts.
+   * Stop it when the component unmounts.
+   */
   useEffect(() => {
     startCamera();
 
     return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((t) => t.stop());
-        streamRef.current = null;
-      }
+      stopCamera();
+    };
+  }, [startCamera, stopCamera]);
+
+  /**
+   * Revoke the object URL whenever photoUrl changes
+   * or when the component unmounts.
+   *
+   * This prevents browser memory leaks caused by
+   * URL.createObjectURL().
+   */
+  useEffect(() => {
+    return () => {
       if (photoUrl) {
         URL.revokeObjectURL(photoUrl);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [photoUrl]);
 
-  const capturePhoto = () => {
+  /**
+   * Capture the current camera frame as a JPEG.
+   */
+  const capturePhoto = useCallback(() => {
     if (!videoRef.current || photoCaptured) {
       return;
     }
 
     const video = videoRef.current;
+
     const width = video.videoWidth;
     const height = video.videoHeight;
 
+    if (!width || !height) {
+      setError("Camera is not ready yet. Please try again.");
+      return;
+    }
+
     const canvas = document.createElement("canvas");
+
     canvas.width = width;
     canvas.height = height;
+
     const context = canvas.getContext("2d");
+
+    if (!context) {
+      setError("Unable to capture a photo. Please try again.");
+      return;
+    }
 
     context.drawImage(video, 0, 0, width, height);
 
@@ -78,70 +140,76 @@ const Capture = () => {
           return;
         }
 
-        if (photoUrl) {
-          URL.revokeObjectURL(photoUrl);
-        }
-
         const url = URL.createObjectURL(blob);
+
         setPhotoUrl(url);
         setPhotoBlob(blob);
         setPhotoCaptured(true);
 
-        // stop camera to freeze and free device
-        if (streamRef.current) {
-          streamRef.current.getTracks().forEach((t) => t.stop());
-          streamRef.current = null;
-        }
-        if (videoRef.current) {
-          try {
-            videoRef.current.pause();
-            videoRef.current.srcObject = null;
-          } catch (e) {
-            // ignore
-          }
-        }
+        // Freeze the camera after capturing the photo.
+        stopCamera();
       },
       "image/jpeg",
       0.95,
     );
-  };
+  }, [photoCaptured, stopCamera]);
 
-  const camera = useCamera();
-
-  // register the capture handler with camera context so BottomNav can trigger it
+  /**
+   * Register the capture handler with CameraContext
+   * so BottomNav can trigger the camera shutter.
+   */
   useEffect(() => {
     camera.registerSnapHandler(capturePhoto);
   }, [camera, capturePhoto]);
 
-  const handleRetake = async () => {
-    // clear the captured photo and restart camera
-    if (photoUrl) {
-      URL.revokeObjectURL(photoUrl);
-    }
+  /**
+   * Retake the photo.
+   */
+  const handleRetake = useCallback(async () => {
     setPhotoUrl(null);
     setPhotoBlob(null);
     setPhotoCaptured(false);
-    setError("");
+    setError(null);
 
     await startCamera();
-  };
+  }, [startCamera]);
 
-  // removed clear action — Retake restarts camera and clears photo
+  /**
+   * Handle selecting an image from a file input.
+   */
+  const handleFileInput = useCallback(
+    (event) => {
+      const file = event.target.files?.[0];
 
-  const handleFileInput = (event) => {
-    const file = event.target.files?.[0];
-    if (!file) {
-      return;
-    }
+      if (!file) {
+        return;
+      }
 
-    if (photoUrl) {
-      URL.revokeObjectURL(photoUrl);
-    }
+      if (!file.type.startsWith("image/")) {
+        setError("Please choose an image file.");
+        return;
+      }
 
-    setPhotoBlob(file);
-    setPhotoUrl(URL.createObjectURL(file));
-  };
+      setError(null);
 
+      const url = URL.createObjectURL(file);
+
+      setPhotoBlob(file);
+      setPhotoUrl(url);
+      setPhotoCaptured(true);
+
+      // Stop camera if the user chooses a file instead.
+      stopCamera();
+
+      // Allow selecting the same file again later.
+      event.target.value = "";
+    },
+    [stopCamera],
+  );
+
+  /**
+   * Upload the captured/selected image.
+   */
   const uploadImage = async () => {
     if (!photoBlob) {
       setError("Please capture or choose a photo first.");
@@ -149,18 +217,17 @@ const Capture = () => {
     }
 
     setUploading(true);
-    setError("");
+    setError(null);
 
     try {
       await uploadPersonalRecipeImage(photoBlob);
 
       setPhotoBlob(null);
-      if (photoUrl) {
-        URL.revokeObjectURL(photoUrl);
-        setPhotoUrl(null);
-      }
+      setPhotoUrl(null);
+      setPhotoCaptured(false);
     } catch (err) {
       console.error("Upload failed:", err);
+
       setError("Unable to upload photo. Please try again.");
     } finally {
       setUploading(false);
@@ -170,6 +237,7 @@ const Capture = () => {
   return (
     <div className="capture-page">
       {error && <div className="capture-error">{error}</div>}
+
       <div className="capture-camera-section">
         <div className="capture-video-wrapper">
           <video
@@ -178,7 +246,9 @@ const Capture = () => {
             autoPlay
             playsInline
             muted
-            style={{ display: photoCaptured ? "none" : "block" }}
+            style={{
+              display: photoCaptured ? "none" : "block",
+            }}
           />
 
           {photoCaptured && photoUrl && (
@@ -187,11 +257,12 @@ const Capture = () => {
                 type="button"
                 className="close-btn"
                 onClick={handleRetake}
-                aria-label="Retake"
+                aria-label="Retake photo"
               >
                 <FontAwesomeIcon icon={faTimes} />
               </button>
-              <img src={photoUrl} alt="captured" />
+
+              <img src={photoUrl} alt="Captured" />
             </div>
           )}
         </div>
@@ -199,7 +270,6 @@ const Capture = () => {
 
       <div className="capture-details-section" />
 
-      {/* floating upload FAB positioned above bottom nav */}
       <button
         type="button"
         className="upload-fab"
