@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { uploadPersonalRecipeImage } from "../../api/personal-recipes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faUpload, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useCamera } from "../../context/CameraContext";
 import "./Capture.scss";
 
@@ -183,34 +183,21 @@ const Capture = () => {
 
           {photoCaptured && photoUrl && (
             <div className="photo-overlay">
+              <button
+                type="button"
+                className="close-btn"
+                onClick={handleRetake}
+                aria-label="Retake"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
               <img src={photoUrl} alt="captured" />
             </div>
           )}
         </div>
       </div>
 
-      <div className="capture-details-section">
-        <button
-          type="button"
-          className="upload-button"
-          onClick={uploadImage}
-          disabled={uploading || !photoBlob}
-        >
-          {uploading ? "Uploading..." : "Upload Photo"}
-        </button>
-
-        {photoCaptured && (
-          <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-            <button
-              type="button"
-              className="retake-button"
-              onClick={handleRetake}
-            >
-              Retake
-            </button>
-          </div>
-        )}
-      </div>
+      <div className="capture-details-section" />
 
       {/* floating upload FAB positioned above bottom nav */}
       <button
