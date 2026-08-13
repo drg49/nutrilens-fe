@@ -270,7 +270,7 @@ const Capture = () => {
                   zIndex: 10,
                   backgroundColor: "#d32f2f",
                   color: "white",
-                  borderRadius: "4px",
+                  width: 40,
                   "&:hover": {
                     backgroundColor: "#b71c1c",
                   },

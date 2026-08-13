@@ -57,18 +57,6 @@
   object-fit: cover;
 }
 
-.capture-file-label input {
-  display: none;
-}
-
-.capture-file-label {
-  background: transparent;
-  border-radius: 6px;
-  padding: 0.6rem 1rem;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
-
 .capture-error {
   padding: 1rem;
   background: rgba(255, 0, 0, 0.08);
