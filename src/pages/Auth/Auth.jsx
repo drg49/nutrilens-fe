@@ -34,7 +34,7 @@ const Auth = () => {
         {isLoading && (
           <div className="auth-loading-text">
             Our free server may take up to 45 seconds to wake up. Please wait
-            while we log you in! :)
+            while we log you in! 😊
           </div>
         )}
         {!isLoading &&

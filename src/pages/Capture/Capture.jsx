@@ -306,9 +306,19 @@ const Capture = () => {
             bottom: 16,
             right: 16,
             zIndex: 10,
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            backgroundColor: "#1976d2",
+            color: "white",
+            width: 56,
+            height: 56,
+            borderRadius: "8px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
             "&:hover": {
-              backgroundColor: "rgba(255, 255, 255, 1)",
+              backgroundColor: "#1565c0",
+              boxShadow: "0 6px 16px rgba(0, 0, 0, 0.2)",
+            },
+            "&:disabled": {
+              backgroundColor: "#90caf9",
+              color: "rgba(255, 255, 255, 0.7)",
             },
           }}
         >
@@ -323,9 +333,15 @@ const Capture = () => {
             bottom: 16,
             right: 16,
             zIndex: 10,
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            backgroundColor: "#1976d2",
+            color: "white",
+            width: 56,
+            height: 56,
+            borderRadius: "8px",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
             "&:hover": {
-              backgroundColor: "rgba(255, 255, 255, 1)",
+              backgroundColor: "#1565c0",
+              boxShadow: "0 6px 16px rgba(0, 0, 0, 0.2)",
             },
           }}
         >
