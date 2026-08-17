@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { uploadPersonalRecipeImage } from "../../api/personal-recipes";
+import { uploadPersonalRecipeImage } from "../../api/recipes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUpload,

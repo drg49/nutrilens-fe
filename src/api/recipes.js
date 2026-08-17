@@ -1,5 +1,5 @@
 import { handleResponse } from "../utils/helperMethods";
-const root = process.env.REACT_APP_API_ROOT_URL + "/personal-recipes";
+const root = process.env.REACT_APP_API_ROOT_URL + "/recipes";
 
 export const getPersonalRecipes = async () =>
   handleResponse(

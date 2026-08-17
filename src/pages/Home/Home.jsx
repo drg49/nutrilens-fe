@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { getPersonalRecipes } from '../../api/personal-recipes';
+import React, { useEffect } from "react";
+import { getPersonalRecipes } from "../../api/recipes";
 
 const Home = () => {
   useEffect(() => {
